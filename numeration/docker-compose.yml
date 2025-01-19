@@ -1,0 +1,12 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:16
+    user: root
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: numeration
+    ports:
+      - "5445:5432"
+    restart: unless-stopped

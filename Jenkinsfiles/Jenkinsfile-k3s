@@ -1,0 +1,24 @@
+pipeline {
+    agent {
+        kubernetes {
+            cloud "k3s"
+            label "java-21"
+            defaultContainer "java"
+        }
+   }
+    stages {
+         stage('Building project ') {
+          script{
+                   sh "mvn clean package"
+            }
+          }
+          stage('Building Docker image') {
+            steps {
+                    script{
+                      img = docker.build("${IMAGE_NAME}:latest")
+
+                }
+            }
+        }
+    }
+}

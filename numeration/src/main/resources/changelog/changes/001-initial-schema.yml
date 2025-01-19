@@ -1,0 +1,136 @@
+databaseChangeLog:
+  - changeSet:
+      id: "001-create-table-configuration"
+      author: "hamdi"
+      changes:
+        - createTable:
+            tableName: "configuration"
+            columns:
+              - column:
+                  name: "id"
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "002-create-table-form"
+      author: "hamdi"
+      changes:
+        - createTable:
+            tableName: "form"
+            columns:
+              - column:
+                  name: "id"
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "fields"
+                  type: "TEXT"
+              - column:
+                  name: "numeration"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "config_id"
+                  type: "UUID"
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseTableName: "form"
+            baseColumnNames: "config_id"
+            referencedTableName: "configuration"
+            referencedColumnNames: "id"
+            constraintName: "fk_form_config"
+
+  - changeSet:
+      id: "003-create-table-criteria"
+      author: "hamdi"
+      changes:
+        - createTable:
+            tableName: "criteria"
+            columns:
+              - column:
+                  name: "id"
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "sort_order"
+                  type: "INTEGER"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "type"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "format"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "prefix"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "suffix"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "configuration_id"
+                  type: "UUID"
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseTableName: "criteria"
+            baseColumnNames: "configuration_id"
+            referencedTableName: "configuration"
+            referencedColumnNames: "id"
+            constraintName: "fk_criteria_configuration"
+  - changeSet:
+      id: "004-create-join-table-configuration-criteria"
+      author: "hamdi"
+      changes:
+        - createTable:
+            tableName: "configuration_criteria_list"
+            columns:
+              - column:
+                  name: "configuration_id"
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "criteria_id"
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: "configuration_criteria_list"
+            baseColumnNames: "configuration_id"
+            referencedTableName: "configuration"
+            referencedColumnNames: "id"
+            constraintName: "fk_configuration_criteria_list_configuration"
+        - addForeignKeyConstraint:
+            baseTableName: "configuration_criteria_list"
+            baseColumnNames: "criteria_id"
+            referencedTableName: "criteria"
+            referencedColumnNames: "id"
+            constraintName: "fk_configuration_criteria_list_criteria"
